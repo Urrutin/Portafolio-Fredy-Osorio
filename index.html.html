@@ -1,0 +1,1574 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fredy Osorio — Software Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --card: #16161f;
+    --border: #22222e;
+    --accent: #00e5a0;
+    --accent2: #0066ff;
+    --accent3: #ff4d6d;
+    --text: #e8e8f0;
+    --muted: #6b6b80;
+    --highlight: #1a2a1a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    overflow-x: hidden;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 3rem;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 8rem 3rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 50%, rgba(0,229,160,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 10% 80%, rgba(0,102,255,0.05) 0%, transparent 60%);
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.3;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  }
+
+  .hero-content {
+    max-width: 900px;
+    position: relative;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(0,229,160,0.08);
+    border: 1px solid rgba(0,229,160,0.2);
+    color: var(--accent);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.4rem 1rem;
+    border-radius: 2px;
+    margin-bottom: 1.8rem;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: blink 1.5s infinite;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+  }
+
+  .hero h1 .name-line { display: block; }
+  .hero h1 .accent-word { color: var(--accent); }
+
+  .hero-sub {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.8;
+    max-width: 520px;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-contact {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+
+  .contact-item .icon { color: var(--accent); }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--accent);
+    color: #000;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.85rem 1.8rem;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+
+  .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.85rem 1.8rem;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* SECTION BASE */
+  section {
+    padding: 6rem 3rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.7rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 80px;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 3rem;
+  }
+
+  /* TECH STACK */
+  .tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .tech-item {
+    background: var(--card);
+    padding: 1.5rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    transition: background 0.2s;
+  }
+
+  .tech-item:hover { background: var(--surface); }
+
+  .tech-icon {
+    font-size: 1.8rem;
+    display: block;
+  }
+
+  .tech-name {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .tech-level {
+    height: 2px;
+    background: var(--border);
+    border-radius: 1px;
+    overflow: hidden;
+  }
+
+  .tech-level-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 1px;
+    animation: fillBar 1.2s ease both;
+    animation-delay: var(--delay, 0s);
+  }
+
+  /* PROJECTS */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: border-color 0.25s, transform 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+
+  .project-card:hover { border-color: rgba(0,229,160,0.3); transform: translateY(-3px); }
+  .project-card:hover::before { transform: scaleX(1); }
+
+  .project-num {
+    font-size: 0.62rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  .project-icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+
+  .project-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .project-desc {
+    font-size: 0.72rem;
+    color: var(--muted);
+    line-height: 1.8;
+    flex: 1;
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+  }
+
+  .tag {
+    background: rgba(0,229,160,0.07);
+    border: 1px solid rgba(0,229,160,0.15);
+    color: var(--accent);
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    padding: 0.25rem 0.6rem;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+
+  .tag.blue {
+    background: rgba(0,102,255,0.07);
+    border-color: rgba(0,102,255,0.2);
+    color: #5599ff;
+  }
+
+  .tag.red {
+    background: rgba(255,77,109,0.07);
+    border-color: rgba(255,77,109,0.2);
+    color: #ff7090;
+  }
+
+  .project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--accent);
+    font-size: 0.68rem;
+    text-decoration: none;
+    letter-spacing: 0.06em;
+    margin-top: 0.3rem;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+
+  .project-link:hover { opacity: 1; }
+
+  /* CODE SNIPPET in card */
+  .code-block {
+    background: #0d0d14;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 0.9rem 1rem;
+    font-size: 0.62rem;
+    color: #88aacc;
+    line-height: 1.7;
+    overflow: hidden;
+  }
+
+  .code-block .kw { color: #ff7b9c; }
+  .code-block .fn { color: #79d9b5; }
+  .code-block .st { color: #f5c56a; }
+  .code-block .cm { color: #555566; }
+
+  /* SKILLS */
+  .skills-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+  }
+
+  .skills-group-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .skills-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    list-style: none;
+  }
+
+  .skill-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 0.72rem;
+    color: var(--text);
+    padding: 0.7rem 1rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    transition: border-color 0.2s;
+  }
+
+  .skill-item:hover { border-color: rgba(0,229,160,0.25); }
+
+  .skill-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  /* ABOUT */
+  .about-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .about-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .about-card-header {
+    background: var(--surface);
+    padding: 0.8rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .dot.red { background: #ff5f57; }
+  .dot.yellow { background: #ffbd2e; }
+  .dot.green { background: var(--accent); }
+
+  .about-card-body { padding: 1.5rem; }
+
+  .about-text {
+    font-size: 0.75rem;
+    line-height: 2;
+    color: var(--muted);
+  }
+
+  .about-text strong { color: var(--accent); font-weight: 500; }
+
+  .about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    margin-top: 2rem;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .stat-box {
+    background: var(--card);
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--accent);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 0.6rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 0.3rem;
+  }
+
+  /* TERMINAL CARD */
+  .terminal {
+    background: #0d0d14;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .terminal-bar {
+    background: #1a1a24;
+    padding: 0.7rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .terminal-title {
+    margin-left: 0.5rem;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .terminal-body {
+    padding: 1.5rem;
+    font-size: 0.7rem;
+    line-height: 2;
+  }
+
+  .prompt { color: var(--accent); }
+  .cmd { color: #aaccff; }
+  .output { color: var(--muted); padding-left: 1rem; }
+  .output.success { color: #79d9b5; }
+  .cursor {
+    display: inline-block;
+    width: 7px; height: 14px;
+    background: var(--accent);
+    vertical-align: middle;
+    animation: blink 1s step-end infinite;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 3rem;
+    text-align: center;
+    background: var(--surface);
+  }
+
+  .footer-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-sub {
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .footer-links a {
+    color: var(--muted);
+    font-size: 0.68rem;
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--accent); }
+
+  .footer-copy {
+    margin-top: 2rem;
+    font-size: 0.6rem;
+    color: #333344;
+  }
+
+  /* DIVIDER */
+  .section-divider {
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    margin: 0;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  @keyframes fillBar {
+    from { width: 0; }
+    to { width: var(--width, 80%); }
+  }
+
+  .fade-in {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ANÁLISIS DE SISTEMAS */
+  .analysis-intro {
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.9;
+    max-width: 680px;
+    margin-bottom: 3rem;
+  }
+
+  .analysis-intro strong { color: var(--accent); font-weight: 500; }
+
+  .analysis-areas {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .area-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.8rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.25s, transform 0.25s;
+  }
+
+  .area-card:hover { border-color: rgba(0,229,160,0.3); transform: translateY(-2px); }
+
+  .area-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .area-card:hover::after { opacity: 1; }
+
+  .area-icon {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .area-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.6rem;
+  }
+
+  .area-desc {
+    font-size: 0.7rem;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+  }
+
+  .area-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .area-tool {
+    background: rgba(0,229,160,0.06);
+    border: 1px solid rgba(0,229,160,0.12);
+    color: var(--muted);
+    font-size: 0.58rem;
+    letter-spacing: 0.07em;
+    padding: 0.2rem 0.55rem;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+
+  /* ROADMAP */
+  .roadmap {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2rem 2.5rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .roadmap-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+  }
+
+  .roadmap-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .roadmap-step {
+    display: grid;
+    grid-template-columns: 120px 1px 1fr;
+    gap: 0 1.5rem;
+    min-height: 70px;
+  }
+
+  .step-phase {
+    text-align: right;
+    padding-top: 0.15rem;
+  }
+
+  .step-phase-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .step-phase-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--border);
+  }
+
+  .step-line {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .step-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    background: var(--bg);
+    flex-shrink: 0;
+    transition: border-color 0.3s, background 0.3s;
+    margin-top: 4px;
+  }
+
+  .roadmap-step.active .step-dot {
+    border-color: var(--accent);
+    background: var(--accent);
+    box-shadow: 0 0 10px rgba(0,229,160,0.4);
+  }
+
+  .roadmap-step.done .step-dot {
+    border-color: var(--accent);
+    background: var(--accent);
+  }
+
+  .step-connector {
+    flex: 1;
+    width: 1px;
+    background: var(--border);
+    min-height: 40px;
+  }
+
+  .roadmap-step.done .step-connector { background: var(--accent); opacity: 0.3; }
+
+  .step-content {
+    padding: 0 0 2rem 0;
+  }
+
+  .step-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.3rem;
+  }
+
+  .roadmap-step.active .step-title { color: var(--accent); }
+
+  .step-desc {
+    font-size: 0.68rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .step-badge {
+    display: inline-block;
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    border-radius: 2px;
+    margin-bottom: 0.4rem;
+  }
+
+  .badge-done { background: rgba(0,229,160,0.1); color: var(--accent); border: 1px solid rgba(0,229,160,0.2); }
+  .badge-now  { background: rgba(0,102,255,0.1); color: #5599ff; border: 1px solid rgba(0,102,255,0.2); }
+  .badge-next { background: rgba(255,77,109,0.07); color: #ff7090; border: 1px solid rgba(255,77,109,0.15); }
+
+  /* HERRAMIENTAS TABLE */
+  .tools-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.7rem;
+  }
+
+  .tools-table th {
+    text-align: left;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .tools-table td {
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid rgba(34,34,46,0.5);
+    color: var(--text);
+    vertical-align: middle;
+  }
+
+  .tools-table tr:last-child td { border-bottom: none; }
+  .tools-table tr:hover td { background: rgba(0,229,160,0.02); }
+
+  .tool-name { font-weight: 500; color: var(--text); }
+  .tool-use  { color: var(--muted); }
+  .tool-lvl  { text-align: center; }
+
+  .lvl-dots { display: flex; gap: 3px; justify-content: center; }
+  .lvl-dot  { width: 6px; height: 6px; border-radius: 50%; background: var(--border); }
+  .lvl-dot.on { background: var(--accent); }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 4rem 1.5rem; }
+    .hero { padding: 7rem 1.5rem 3rem; }
+    .about-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+    .skills-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+    footer { padding: 2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#inicio" class="nav-logo">FAO.dev</a>
+  <ul class="nav-links">
+    <li><a href="#sobre-mi">Sobre mí</a></li>
+    <li><a href="#tecnologias">Stack</a></li>
+    <li><a href="#proyectos">Python</a></li>
+    <li><a href="#proyectos-web">HTML/CSS/JS</a></li>
+    <li><a href="#analisis">Análisis</a></li>
+    <li><a href="#habilidades">Habilidades</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div id="inicio" style="position:relative;">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero">
+    <div class="hero-content">
+      <span class="hero-tag">Disponible para trabajar · El Salvador</span>
+      <h1>
+        <span class="name-line">Fredy Anderson</span>
+        <span class="name-line">Osorio <span class="accent-word">Ascencio</span></span>
+      </h1>
+      <p class="hero-sub">
+        Software Developer enfocado en <strong style="color:var(--accent)">Python, Data & Automatización</strong> y desarrollo <strong style="color:var(--accent)">Frontend</strong>.<br>
+        Estudiante de Ingeniería en Sistemas Computacionales con pasión por construir soluciones que generan impacto real.
+      </p>
+      <div class="hero-contact">
+        <span class="contact-item"><span class="icon">📍</span> El Salvador</span>
+        <span class="contact-item"><span class="icon">📞</span> 6445-0873</span>
+        <span class="contact-item"><span class="icon">✉️</span> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="046b776b766d6b657767616a676d6b31446369656d682a676b69">[email&#160;protected]</a></span>
+      </div>
+      <div class="hero-cta">
+        <a href="#proyectos" class="btn-primary">↓ Ver proyectos</a>
+        <a href="#contacto" class="btn-outline">Contáctame</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- SOBRE MÍ -->
+<section id="sobre-mi" class="fade-in">
+  <div class="section-label">01 — Sobre mí</div>
+  <h2 class="section-title">Quién soy</h2>
+  <div class="about-layout">
+    <div>
+      <div class="about-card">
+        <div class="about-card-header">
+          <div class="dot red"></div>
+          <div class="dot yellow"></div>
+          <div class="dot green"></div>
+          <span class="terminal-title">fredy@portfolio:~</span>
+        </div>
+        <div class="about-card-body">
+          <p class="about-text">
+            Soy <strong>Fredy Anderson Osorio Ascencio</strong>, desarrollador de software salvadoreño enfocado en crear soluciones tecnológicas eficientes.<br><br>
+            Mi especialidad está en <strong>Python</strong>, <strong>automatización de procesos</strong> y <strong>análisis de datos</strong>. Me apasiona resolver problemas reales con código limpio y bien estructurado.<br><br>
+            Actualmente en formación como <strong>Ingeniero en Sistemas Computacionales</strong>, siempre buscando nuevos retos que me permitan crecer profesionalmente.
+          </p>
+        </div>
+      </div>
+      <div class="about-stats">
+        <div class="stat-box">
+          <span class="stat-num">5+</span>
+          <div class="stat-label">Proyectos Python</div>
+        </div>
+        <div class="stat-box">
+          <span class="stat-num">3+</span>
+          <div class="stat-label">Tecnologías</div>
+        </div>
+        <div class="stat-box">
+          <span class="stat-num">100%</span>
+          <div class="stat-label">Compromiso</div>
+        </div>
+        <div class="stat-box">
+          <span class="stat-num">SV</span>
+          <div class="stat-label">El Salvador</div>
+        </div>
+      </div>
+    </div>
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="dot red"></div>
+        <div class="dot yellow"></div>
+        <div class="dot green"></div>
+        <span class="terminal-title">bash — python3</span>
+      </div>
+      <div class="terminal-body">
+        <div><span class="prompt">❯ </span><span class="cmd">python3 fredy_info.py</span></div>
+        <div class="output success"># Cargando perfil...</div>
+        <br>
+        <div class="output">{</div>
+        <div class="output">&nbsp;&nbsp;"nombre": <span style="color:#f5c56a">"Fredy A. Osorio"</span>,</div>
+        <div class="output">&nbsp;&nbsp;"rol": <span style="color:#f5c56a">"Software Developer"</span>,</div>
+        <div class="output">&nbsp;&nbsp;"ubicacion": <span style="color:#f5c56a">"El Salvador 🇸🇻"</span>,</div>
+        <div class="output">&nbsp;&nbsp;"focus": [</div>
+        <div class="output">&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#f5c56a">"Python"</span>,</div>
+        <div class="output">&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#f5c56a">"Data Analysis"</span>,</div>
+        <div class="output">&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#f5c56a">"Automatización"</span>,</div>
+        <div class="output">&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#f5c56a">"MySQL"</span></div>
+        <div class="output">&nbsp;&nbsp;],</div>
+        <div class="output">&nbsp;&nbsp;"open_to_work": <span style="color:#79d9b5">True</span></div>
+        <div class="output">}</div>
+        <br>
+        <div><span class="prompt">❯ </span><span class="cursor"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- TECNOLOGÍAS -->
+<section id="tecnologias" class="fade-in">
+  <div class="section-label">02 — Stack técnico</div>
+  <h2 class="section-title">Tecnologías</h2>
+  <div class="tech-grid">
+    <div class="tech-item">
+      <span class="tech-icon">🐍</span>
+      <div class="tech-name">Python</div>
+      <div class="tech-level"><div class="tech-level-fill" style="--width:88%;--delay:0.1s"></div></div>
+    </div>
+    <div class="tech-item">
+      <span class="tech-icon">🗄️</span>
+      <div class="tech-name">MySQL</div>
+      <div class="tech-level"><div class="tech-level-fill" style="--width:78%;--delay:0.2s"></div></div>
+    </div>
+    <div class="tech-item">
+      <span class="tech-icon">📊</span>
+      <div class="tech-name">Data Analysis</div>
+      <div class="tech-level"><div class="tech-level-fill" style="--width:75%;--delay:0.3s"></div></div>
+    </div>
+    <div class="tech-item">
+      <span class="tech-icon">⚙️</span>
+      <div class="tech-name">Automation</div>
+      <div class="tech-level"><div class="tech-level-fill" style="--width:80%;--delay:0.4s"></div></div>
+    </div>
+    <div class="tech-item">
+      <span class="tech-icon">📗</span>
+      <div class="tech-name">Excel / Sheets</div>
+      <div class="tech-level"><div class="tech-level-fill" style="--width:70%;--delay:0.5s"></div></div>
+    </div>
+    <div class="tech-item">
+      <span class="tech-icon">🪟</span>
+      <div class="tech-name">Windows</div>
+      <div class="tech-level"><div class="tech-level-fill" style="--width:90%;--delay:0.6s"></div></div>
+    </div>
+    <div class="tech-item">
+      <span class="tech-icon">🌐</span>
+      <div class="tech-name">HTML5</div>
+      <div class="tech-level"><div class="tech-level-fill" style="--width:82%;--delay:0.7s"></div></div>
+    </div>
+    <div class="tech-item">
+      <span class="tech-icon">🎨</span>
+      <div class="tech-name">CSS3</div>
+      <div class="tech-level"><div class="tech-level-fill" style="--width:78%;--delay:0.8s"></div></div>
+    </div>
+    <div class="tech-item">
+      <span class="tech-icon">⚡</span>
+      <div class="tech-name">JavaScript</div>
+      <div class="tech-level"><div class="tech-level-fill" style="--width:70%;--delay:0.9s"></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- PROYECTOS -->
+<section id="proyectos" class="fade-in">
+  <div class="section-label">03 — Portafolio</div>
+  <h2 class="section-title">Proyectos Python</h2>
+  <div class="projects-grid">
+
+    <!-- PROYECTO 1 -->
+    <div class="project-card">
+      <div class="project-num">01 / 05</div>
+      <span class="project-icon">📊</span>
+      <div class="project-title">Analizador de Ventas con Pandas</div>
+      <p class="project-desc">
+        Script Python que procesa archivos CSV de ventas para generar reportes automáticos con estadísticas clave: totales, tendencias mensuales, productos más vendidos y alertas de stock bajo. Exporta resultados a Excel formateado.
+      </p>
+      <div class="code-block">
+        <span class="cm"># Análisis de datos de ventas</span><br>
+        <span class="kw">import</span> pandas <span class="kw">as</span> pd<br>
+        <span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt<br><br>
+        df = pd.<span class="fn">read_csv</span>(<span class="st">'ventas.csv'</span>)<br>
+        top = df.<span class="fn">groupby</span>(<span class="st">'producto'</span>).<span class="fn">sum</span>()<br>
+        top.<span class="fn">plot</span>(kind=<span class="st">'bar'</span>)
+      </div>
+      <div class="project-tags">
+        <span class="tag">Python</span>
+        <span class="tag">Pandas</span>
+        <span class="tag blue">Matplotlib</span>
+        <span class="tag">Excel</span>
+      </div>
+    </div>
+
+    <!-- PROYECTO 2 -->
+    <div class="project-card">
+      <div class="project-num">02 / 05</div>
+      <span class="project-icon">🤖</span>
+      <div class="project-title">Bot de Automatización Web</div>
+      <p class="project-desc">
+        Automatización con Selenium y Python para extracción de datos de sitios web, llenado de formularios y generación de reportes. Incluye manejo de errores, logs detallados y programación de tareas con schedule.
+      </p>
+      <div class="code-block">
+        <span class="cm"># Web scraper automatizado</span><br>
+        <span class="kw">from</span> selenium <span class="kw">import</span> webdriver<br>
+        <span class="kw">import</span> schedule, time<br><br>
+        <span class="kw">def</span> <span class="fn">scrape_data</span>():<br>
+        &nbsp;&nbsp;driver = webdriver.<span class="fn">Chrome</span>()<br>
+        &nbsp;&nbsp;<span class="fn">extraer_tabla</span>(driver)
+      </div>
+      <div class="project-tags">
+        <span class="tag">Python</span>
+        <span class="tag blue">Selenium</span>
+        <span class="tag">Schedule</span>
+        <span class="tag red">Logging</span>
+      </div>
+    </div>
+
+    <!-- PROYECTO 3 -->
+    <div class="project-card">
+      <div class="project-num">03 / 05</div>
+      <span class="project-icon">🗄️</span>
+      <div class="project-title">Sistema de Gestión con MySQL</div>
+      <p class="project-desc">
+        Aplicación de escritorio en Python con interfaz de consola para gestionar inventario de una empresa. Conectado a MySQL para CRUD completo, generación de reportes y búsquedas avanzadas con filtros dinámicos.
+      </p>
+      <div class="code-block">
+        <span class="cm"># Conexión y consulta MySQL</span><br>
+        <span class="kw">import</span> mysql.connector<br><br>
+        conn = mysql.connector.<span class="fn">connect</span>(<br>
+        &nbsp;&nbsp;host=<span class="st">"localhost"</span>,<br>
+        &nbsp;&nbsp;database=<span class="st">"inventario"</span><br>
+        )<br>
+        cursor = conn.<span class="fn">cursor</span>()
+      </div>
+      <div class="project-tags">
+        <span class="tag">Python</span>
+        <span class="tag blue">MySQL</span>
+        <span class="tag">CRUD</span>
+        <span class="tag">Inventario</span>
+      </div>
+    </div>
+
+    <!-- PROYECTO 4 -->
+    <div class="project-card">
+      <div class="project-num">04 / 05</div>
+      <span class="project-icon">📧</span>
+      <div class="project-title">Automatizador de Reportes por Email</div>
+      <p class="project-desc">
+        Sistema que recopila métricas de archivos Excel, genera gráficas automáticas con Matplotlib y envía reportes semanales por email con adjuntos formateados. Usa cron para ejecución automática sin intervención humana.
+      </p>
+      <div class="code-block">
+        <span class="cm"># Envío automático de reportes</span><br>
+        <span class="kw">import</span> smtplib, openpyxl<br>
+        <span class="kw">from</span> email.mime.multipart <span class="kw">import</span> MIMEMultipart<br><br>
+        <span class="kw">def</span> <span class="fn">enviar_reporte</span>(destinatario):<br>
+        &nbsp;&nbsp;msg = <span class="fn">MIMEMultipart</span>()<br>
+        &nbsp;&nbsp;<span class="fn">adjuntar_grafica</span>(msg)
+      </div>
+      <div class="project-tags">
+        <span class="tag">Python</span>
+        <span class="tag">SMTP</span>
+        <span class="tag blue">openpyxl</span>
+        <span class="tag red">Cron</span>
+      </div>
+    </div>
+
+    <!-- PROYECTO 5 -->
+    <div class="project-card">
+      <div class="project-num">05 / 05</div>
+      <span class="project-icon">📈</span>
+      <div class="project-title">Dashboard de KPIs con Streamlit</div>
+      <p class="project-desc">
+        Dashboard web interactivo construido con Streamlit y Python para visualizar KPIs empresariales en tiempo real. Conecta con base de datos MySQL, muestra gráficas interactivas con Plotly y permite filtrar datos por fecha y categoría.
+      </p>
+      <div class="code-block">
+        <span class="cm"># Dashboard interactivo</span><br>
+        <span class="kw">import</span> streamlit <span class="kw">as</span> st<br>
+        <span class="kw">import</span> plotly.express <span class="kw">as</span> px<br><br>
+        st.<span class="fn">title</span>(<span class="st">"Dashboard de KPIs 📊"</span>)<br>
+        fig = px.<span class="fn">bar</span>(df, x=<span class="st">"mes"</span>, y=<span class="st">"ventas"</span>)<br>
+        st.<span class="fn">plotly_chart</span>(fig)
+      </div>
+      <div class="project-tags">
+        <span class="tag">Python</span>
+        <span class="tag blue">Streamlit</span>
+        <span class="tag">Plotly</span>
+        <span class="tag blue">MySQL</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- PROYECTOS WEB -->
+<section id="proyectos-web" class="fade-in">
+  <div class="section-label">04 — Frontend</div>
+  <h2 class="section-title">Proyectos HTML / CSS / JS</h2>
+  <div class="projects-grid">
+
+    <!-- TUS PROYECTOS REALES -->
+
+    <!-- SISTEMA SOLAR -->
+    <div class="project-card">
+      <div class="project-num">01 / 08 · Proyecto real</div>
+      <span class="project-icon">🪐</span>
+      <div class="project-title">Sistema Solar Interactivo</div>
+      <p class="project-desc">
+        Simulación animada del sistema solar con órbitas planetarias en CSS puro. Al hacer clic en cada planeta o el cinturón de asteroides se despliega un popup con información astronómica detallada de cada cuerpo celeste.
+      </p>
+      <div class="code-block">
+        <span class="cm">/* Órbitas animadas con CSS */</span><br>
+        <span class="kw">.orbita</span> {<br>
+        &nbsp;&nbsp;<span class="fn">animation</span>: <span class="st">orbitar</span> var(--dur) linear infinite;<br>
+        &nbsp;&nbsp;<span class="fn">border-radius</span>: <span class="st">50%</span>;<br>
+        }<br>
+        <span class="kw">@keyframes</span> <span class="fn">orbitar</span> {<br>
+        &nbsp;&nbsp;to { <span class="fn">transform</span>: <span class="st">rotate(360deg)</span> }<br>
+        }
+      </div>
+      <div class="project-tags">
+        <span class="tag">HTML</span>
+        <span class="tag blue">CSS</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag red">Animaciones</span>
+      </div>
+    </div>
+
+    <!-- LOGIN -->
+    <div class="project-card">
+      <div class="project-num">02 / 08 · Proyecto real</div>
+      <span class="project-icon">🔐</span>
+      <div class="project-title">Login & Registro UI</div>
+      <p class="project-desc">
+        Formulario de autenticación con doble vista: Login e Registro. Transición animada entre ambos paneles con un checkbox CSS. Diseño moderno con gradiente, sombras y validación de campos HTML5 nativo.
+      </p>
+      <div class="code-block">
+        <span class="cm">/* Toggle entre Login y Registro */</span><br>
+        <span class="kw">#chk:checked ~ .login</span> {<br>
+        &nbsp;&nbsp;<span class="fn">transform</span>: <span class="st">translateY(-500px)</span>;<br>
+        }<br>
+        <span class="kw">.signup label</span> {<br>
+        &nbsp;&nbsp;<span class="fn">transition</span>: <span class="st">.5s ease-in-out</span>;<br>
+        }
+      </div>
+      <div class="project-tags">
+        <span class="tag">HTML</span>
+        <span class="tag blue">CSS</span>
+        <span class="tag">Formularios</span>
+        <span class="tag red">UI/UX</span>
+      </div>
+    </div>
+
+    <!-- RELOJ -->
+    <div class="project-card">
+      <div class="project-num">03 / 08 · Proyecto real</div>
+      <span class="project-icon">⏰</span>
+      <div class="project-title">Reloj Estilo Código</div>
+      <p class="project-desc">
+        Reloj digital en tiempo real que muestra la hora, fecha y día de la semana con sintaxis de objeto JavaScript. Actualización en tiempo real con <code style="color:var(--accent);font-size:0.65rem">requestAnimationFrame</code> y formato de valores tipados (string/number).
+      </p>
+      <div class="code-block">
+        <span class="kw">const</span> <span class="fn">clock</span> = {<br>
+        &nbsp;&nbsp;<span class="fn">hora</span>: <span class="st">10</span>,<br>
+        &nbsp;&nbsp;<span class="fn">minuto</span>: <span class="st">45</span>,<br>
+        &nbsp;&nbsp;<span class="fn">día</span>: <span class="st">"viernes"</span>,<br>
+        &nbsp;&nbsp;<span class="fn">mes</span>: <span class="st">"enero"</span>,<br>
+        };
+      </div>
+      <div class="project-tags">
+        <span class="tag">HTML</span>
+        <span class="tag blue">CSS</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag red">Tiempo real</span>
+      </div>
+    </div>
+
+    <!-- PROYECTOS ADICIONALES HTML/CSS/JS -->
+
+    <!-- CALCULADORA -->
+    <div class="project-card">
+      <div class="project-num">04 / 08</div>
+      <span class="project-icon">🧮</span>
+      <div class="project-title">Calculadora Científica</div>
+      <p class="project-desc">
+        Calculadora con soporte para operaciones básicas y funciones científicas (seno, coseno, raíz cuadrada, potencias). Historial de operaciones, teclado numérico físico compatible y diseño responsive con grid CSS.
+      </p>
+      <div class="code-block">
+        <span class="cm">// Evalúa expresión matemática</span><br>
+        <span class="kw">function</span> <span class="fn">calcular</span>() {<br>
+        &nbsp;&nbsp;<span class="kw">const</span> expr = display.<span class="fn">value</span>;<br>
+        &nbsp;&nbsp;<span class="kw">try</span> { display.value = <span class="fn">eval</span>(expr) }<br>
+        &nbsp;&nbsp;<span class="kw">catch</span> { display.value = <span class="st">'Error'</span> }<br>
+        }
+      </div>
+      <div class="project-tags">
+        <span class="tag">HTML</span>
+        <span class="tag blue">CSS Grid</span>
+        <span class="tag">JavaScript</span>
+      </div>
+    </div>
+
+    <!-- TODO LIST -->
+    <div class="project-card">
+      <div class="project-num">05 / 08</div>
+      <span class="project-icon">✅</span>
+      <div class="project-title">Gestor de Tareas (To-Do App)</div>
+      <p class="project-desc">
+        Aplicación de gestión de tareas con agregar, completar, filtrar y eliminar tareas. Persistencia de datos con LocalStorage, filtros por estado (todas/pendientes/completadas) y animaciones de entrada/salida con CSS.
+      </p>
+      <div class="code-block">
+        <span class="cm">// Guardar en LocalStorage</span><br>
+        <span class="kw">function</span> <span class="fn">guardarTareas</span>(tareas) {<br>
+        &nbsp;&nbsp;localStorage.<span class="fn">setItem</span>(<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="st">'tareas'</span>,<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;JSON.<span class="fn">stringify</span>(tareas)<br>
+        &nbsp;&nbsp;);<br>
+        }
+      </div>
+      <div class="project-tags">
+        <span class="tag">HTML</span>
+        <span class="tag blue">CSS</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag red">LocalStorage</span>
+      </div>
+    </div>
+
+    <!-- CLIMA APP -->
+    <div class="project-card">
+      <div class="project-num">06 / 08</div>
+      <span class="project-icon">🌤️</span>
+      <div class="project-title">App del Clima con API</div>
+      <p class="project-desc">
+        Aplicación web que consume la API de OpenWeatherMap para mostrar el clima actual de cualquier ciudad. Incluye temperatura, humedad, viento, icono dinámico según condición climática y búsqueda con Enter o botón.
+      </p>
+      <div class="code-block">
+        <span class="cm">// Fetch a la API del clima</span><br>
+        <span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(<br>
+        &nbsp;&nbsp;<span class="st">`api.openweathermap.org/`</span><br>
+        &nbsp;&nbsp;<span class="st">+ `?q=${ciudad}&lang=es`</span><br>
+        );<br>
+        <span class="kw">const</span> data = <span class="kw">await</span> res.<span class="fn">json</span>();
+      </div>
+      <div class="project-tags">
+        <span class="tag">HTML</span>
+        <span class="tag blue">CSS</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag red">REST API</span>
+      </div>
+    </div>
+
+    <!-- GALERÍA -->
+    <div class="project-card">
+      <div class="project-num">07 / 08</div>
+      <span class="project-icon">🖼️</span>
+      <div class="project-title">Galería con Lightbox</div>
+      <p class="project-desc">
+        Galería de imágenes responsive con CSS Grid y efecto lightbox al hacer clic en cada foto. Navegación entre imágenes con teclas de flecha, zoom, overlay oscuro animado y soporte para gestos táctiles en móvil.
+      </p>
+      <div class="code-block">
+        <span class="cm">// Abrir lightbox</span><br>
+        <span class="kw">document</span>.<span class="fn">querySelectorAll</span>(<span class="st">'.img-card'</span>)<br>
+        &nbsp;&nbsp;.<span class="fn">forEach</span>(img => img.<span class="fn">addEventListener</span>(<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="st">'click'</span>, e => <span class="fn">openLightbox</span>(e)<br>
+        &nbsp;&nbsp;));
+      </div>
+      <div class="project-tags">
+        <span class="tag">HTML</span>
+        <span class="tag blue">CSS Grid</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag red">Responsive</span>
+      </div>
+    </div>
+
+    <!-- LANDING PAGE -->
+    <div class="project-card">
+      <div class="project-num">08 / 08</div>
+      <span class="project-icon">🚀</span>
+      <div class="project-title">Landing Page Animada</div>
+      <p class="project-desc">
+        Página de aterrizaje moderna con hero section, navbar sticky con efecto glassmorphism, sección de características con animaciones al hacer scroll usando Intersection Observer y formulario de contacto con validación.
+      </p>
+      <div class="code-block">
+        <span class="cm">// Animación al hacer scroll</span><br>
+        <span class="kw">new</span> <span class="fn">IntersectionObserver</span>((entries) => {<br>
+        &nbsp;&nbsp;entries.<span class="fn">forEach</span>(e => {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">if</span> (e.isIntersecting)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.target.classList.<span class="fn">add</span>(<span class="st">'visible'</span>)<br>
+        &nbsp;&nbsp;})<br>
+        }).<span class="fn">observe</span>(section);
+      </div>
+      <div class="project-tags">
+        <span class="tag">HTML</span>
+        <span class="tag blue">CSS</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag red">Scroll FX</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ANÁLISIS DE SISTEMAS -->
+<section id="analisis" class="fade-in">
+  <div class="section-label">05 — Especialización</div>
+  <h2 class="section-title">Análisis de Sistemas</h2>
+
+  <p class="analysis-intro">
+    Mi interés en <strong>Análisis de Sistemas</strong> viene de querer entender cómo funcionan los sistemas por dentro: cómo se procesan los datos, dónde fallan los procesos y cómo mejorarlos con soluciones reales. Combino mis conocimientos de <strong>Python y MySQL</strong> para analizar, probar y reportar sobre sistemas de información de forma práctica.
+  </p>
+
+  <div class="analysis-areas">
+
+    <div class="area-card">
+      <span class="area-icon">🔄</span>
+      <div class="area-title">Análisis de Procesos</div>
+      <p class="area-desc">Observar cómo fluye la información dentro de un sistema o empresa, detectar pasos innecesarios y proponer mejoras concretas usando automatización con Python.</p>
+      <div class="area-tools">
+        <span class="area-tool">Python</span>
+        <span class="area-tool">Diagramas de flujo</span>
+        <span class="area-tool">Excel</span>
+      </div>
+    </div>
+
+    <div class="area-card">
+      <span class="area-icon">🧪</span>
+      <div class="area-title">Pruebas y Validación</div>
+      <p class="area-desc">Verificar que un sistema funciona como se espera: probar entradas, revisar resultados y documentar errores para garantizar calidad antes de entregar.</p>
+      <div class="area-tools">
+        <span class="area-tool">Casos de prueba</span>
+        <span class="area-tool">Testing</span>
+        <span class="area-tool">Documentación</span>
+      </div>
+    </div>
+
+    <div class="area-card">
+      <span class="area-icon">📊</span>
+      <div class="area-title">Análisis de Datos para Decisiones</div>
+      <p class="area-desc">Usar Python y MySQL para extraer y limpiar datos, identificar patrones y generar reportes visuales que ayuden a tomar mejores decisiones dentro de una organización.</p>
+      <div class="area-tools">
+        <span class="area-tool">Python</span>
+        <span class="area-tool">Pandas</span>
+        <span class="area-tool">MySQL</span>
+        <span class="area-tool">Dashboards</span>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<div class="section-divider"></div>
+
+<!-- HABILIDADES -->
+<section id="habilidades" class="fade-in">
+  <div class="section-label">06 — Soft skills</div>
+  <h2 class="section-title">Habilidades Profesionales</h2>
+  <div class="skills-layout">
+    <div>
+      <div class="skills-group-title">Habilidades blandas</div>
+      <ul class="skills-list">
+        <li class="skill-item"><span class="skill-dot"></span>Responsabilidad y puntualidad</li>
+        <li class="skill-item"><span class="skill-dot"></span>Trabajo en equipo colaborativo</li>
+        <li class="skill-item"><span class="skill-dot"></span>Adaptabilidad al cambio</li>
+        <li class="skill-item"><span class="skill-dot"></span>Iniciativa y proactividad</li>
+        <li class="skill-item"><span class="skill-dot"></span>Atención al detalle</li>
+      </ul>
+    </div>
+    <div>
+      <div class="skills-group-title">Competencias técnicas</div>
+      <ul class="skills-list">
+        <li class="skill-item"><span class="skill-dot"></span>Pensamiento lógico y analítico</li>
+        <li class="skill-item"><span class="skill-dot"></span>Resolución de problemas</li>
+        <li class="skill-item"><span class="skill-dot"></span>Aprendizaje rápido y autónomo</li>
+        <li class="skill-item"><span class="skill-dot"></span>Pensamiento crítico</li>
+        <li class="skill-item"><span class="skill-dot"></span>Documentación de código</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- CONTACTO -->
+<section id="contacto" class="fade-in">
+  <div class="section-label">07 — Contacto</div>
+  <h2 class="section-title">Hablemos</h2>
+  <div class="terminal" style="max-width:600px;">
+    <div class="terminal-bar">
+      <div class="dot red"></div>
+      <div class="dot yellow"></div>
+      <div class="dot green"></div>
+      <span class="terminal-title">contacto.sh</span>
+    </div>
+    <div class="terminal-body">
+      <div><span class="prompt">❯ </span><span class="cmd">cat contacto.txt</span></div>
+      <br>
+      <div class="output">📍 El Salvador, Centroamérica</div>
+      <div class="output">📞 +503 6445-0873</div>
+      <div class="output">✉️  <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="aac5d9c5d8c3c5cbd9c9cfc4c9c3c59feacdc7cbc3c684c9c5c7">[email&#160;protected]</a></div>
+      <br>
+      <div class="output success">✔ Disponible para trabajo remoto y presencial</div>
+      <div class="output success">✔ Abierto a prácticas y primer empleo</div>
+      <div class="output success">✔ Listo para incorporarme de inmediato</div>
+      <br>
+      <div><span class="prompt">❯ </span><span class="cursor"></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-name">Fredy A. Osorio</div>
+  <div class="footer-sub">Software Developer · Python · Data · Automatización</div>
+  <div class="footer-links">
+    <a href="/cdn-cgi/l/email-protection#77180418051e181604141219141e184237101a161e1b5914181a">✉ Email</a>
+    <a href="tel:+50364450873">📞 Teléfono</a>
+    <a href="#inicio">↑ Inicio</a>
+  </div>
+  <div class="footer-copy">© 2025 Fredy Anderson Osorio Ascencio · El Salvador 🇸🇻</div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Intersection Observer for fade-in animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Smooth active nav link
+  const sections = document.querySelectorAll('section[id], div[id="inicio"]');
+  const navLinks = document.querySelectorA
